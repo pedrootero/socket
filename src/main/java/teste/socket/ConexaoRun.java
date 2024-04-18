@@ -24,9 +24,10 @@ public class ConexaoRun implements Runnable{
 
     @Override
     public void run() {
-        while (true) {
+        boolean opcao = true;
+        while (opcao) {
             try {
-                System.out.println("Thread " + Thread.currentThread().getName() + " Leitor: " + leitor);
+               // System.out.println("Thread " + Thread.currentThread().getName() + " Leitor: " + leitor);
                 // Verifica se o socket está nulo ou não conectado
                 if (socket == null || !socket.isConnected()) {
 
@@ -38,9 +39,9 @@ public class ConexaoRun implements Runnable{
                     printWriter = new PrintWriter(socket.getOutputStream());
                     System.out.println("Conexão bem sucedida. ");
 
-                } else {
-                    System.out.println("Reutilizando conexão socket existente.");
-                }
+                } //else {
+//                    System.out.println("Reutilizando conexão socket existente.");
+//                }
 
                 // Envia um comando para a antena RFID
                 printWriter.println("read");
@@ -72,6 +73,7 @@ public class ConexaoRun implements Runnable{
             } catch (IOException e) {
                 System.err.println("Erro na conexão socket: " + e.getMessage());
                 try {
+                    opcao = false;
                     socket.close();
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);

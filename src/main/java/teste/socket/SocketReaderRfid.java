@@ -39,7 +39,7 @@ public class SocketReaderRfid {
                         // Decodificar os bytes usando UTF-8
                         String utf8String = new String(bytes, StandardCharsets.UTF_8);
                         String tratada = utf8String.substring(0, utf8String.length());
-                        System.out.println("String UTF-8: " + tratada + "  Leitor: " + leitor);
+                        System.out.println("EPC UTF-8: " + tratada + "  Leitor: " + leitor + "  Thread: " + Thread.currentThread().getName());
                     }
                 }
 //                System.out.println("endIndex primeiro if: " + endIndex);
@@ -74,6 +74,7 @@ public class SocketReaderRfid {
         urls.add("172.16.254.215");
         urls.add("172.16.254.216");
         urls.add("172.16.243.49");
+        urls.add("172.16.254.218");
 
         String response = null;
 
@@ -87,6 +88,9 @@ public class SocketReaderRfid {
         Thread thread3 = new Thread(new ConexaoRun("172.16.243.49"));
         thread3.start();
 
+        Thread thread4 = new Thread(new ConexaoRun("172.16.254.218"));
+        thread4.start();
+
     while (true) {
         Thread.sleep(250);
         if (!thread.isAlive()) {
@@ -97,8 +101,8 @@ public class SocketReaderRfid {
 
         if (!thread2.isAlive()) {
             thread2 = new Thread(new ConexaoRun("172.16.254.216"));
-            thread2.start();
             System.out.println("Reinstanciando a Thread " + Thread.currentThread().getName() + "IP: 172.16.254.216");
+            thread2.start();
         }
 
         if (!thread3.isAlive()) {
@@ -106,7 +110,17 @@ public class SocketReaderRfid {
             thread3.start();
             System.out.println("Reinstanciando a Thread " + Thread.currentThread().getName() + "IP: 172.16.243.49");
         }
+
+        if (!thread4.isAlive()) {
+            thread4 = new Thread(new ConexaoRun("172.16.254.218"));
+            System.out.println("Reinstanciando a Thread " + Thread.currentThread().getName() + "IP: 172.16.254.218");
+            thread4.start();
+
+        }
+
     }
+
+
 //        while (true) {
 //            for (String uri : urls) {
 //                try {
